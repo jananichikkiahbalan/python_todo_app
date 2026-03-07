@@ -1,0 +1,63 @@
+services:
+  frontend:
+    build: ./frontend
+    image: frontend
+    ports:
+      - "8080:80"
+    networks:
+      - mynetwork
+    depends_on:
+      - backend
+      - db
+  backend:
+    build: ./backend
+    image: backend
+    ports:
+      - "5000:5000"
+    networks:
+      - mynetwork
+    environment:
+      - DB_HOST=db
+    depends_on:
+      db:
+        condition: service_healthy
+  db:
+    image: mysql:8.0.45-debian
+    networks:
+      - mynetwork
+    environment:
+      - MYSQL_ROOT_PASSWORD=$MYSQL_ROOT_PASSWORD
+      - MYSQL_DATABASE=todo
+    healthcheck:
+      test: ["CMD", "mysql", "--user=root", "--password=$MYSQL_ROOT_PASSWORD", "-e", "SELECT 1;"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 20s
+    volumes:
+      - ./backend/schema.sql:/docker-entrypoint-initdb.d/schema.sql
+      - dbdata:/var/lib/mysql
+  trivy_frontend:
+    image: aquasec/trivy
+    restart: no
+    command: trivy image --format json --output /output/frontend.json frontend
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - trivydata:/output
+    depends_on:
+      - frontend
+  trivy_backend:
+    image: aquasec/trivy
+    restart: no
+    command: trivy image --format json --output /output/backend.json backend
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - trivydata:/output
+    depends_on:
+     - backend
+volumes:
+  dbdata: {}
+  trivydata: {}
+networks:
+  mynetwork:
+    driver: bridge
