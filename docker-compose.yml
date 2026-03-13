@@ -40,19 +40,19 @@ services:
   trivy_frontend:
     image: aquasec/trivy
     restart: no
-    command: trivy image --format json --output /output/frontend.json frontend
+    command: image --format table --output /home/ubuntu/trivydata/frontend.txt frontend
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - trivydata:/output
+      - /home/ubuntu/trivydata:/home/ubuntu/trivydata
     depends_on:
       - frontend
   trivy_backend:
     image: aquasec/trivy
     restart: no
-    command: trivy image --format json --output /output/backend.json backend
+    command: image --format table --output /home/ubuntu/trivydata/backend.txt backend
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - trivydata:/output
+      - /home/ubuntu/trivydata:/home/ubuntu/trivydata
     depends_on:
      - backend
 volumes:
