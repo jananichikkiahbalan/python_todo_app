@@ -2,9 +2,7 @@ version: '3.9'
 services:
   frontend:
     image: todo-frontend
-    build:
-      context: ./frontend
-      dockerfile: Dockerfile
+    build: /frontend/Dockerfile
     container_name: todo-frontend
     ports:
       - "8080:80"
@@ -18,24 +16,15 @@ services:
     command: image --format table --output /home/trivydata/frontend.txt todo-frontend
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - trivy:/home/trivydata
+      - /home/ubuntu/trivydata:/home/trivydata
     depends_on:
       - frontend
   backend:
     image: todo-backend
-    build:
-      context: ./backend
-      dockerfile: Dockerfile
+    build: /backend/Dockerfile
     container_name: todo-backend 
     ports:
       - "5000:5000"
-    environment:
-      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
-      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
-      - AWS_DEFAULT_REGION=${AWS_DEFAULT_REGION}
-    entrypoint: ["/bin/bash", "/app/backend-start.sh"]
-    volumes:
-      - ./backend/backend-start.sh:/app/backend-start.sh
     networks:
       - connect-network
     depends_on:
@@ -46,19 +35,12 @@ services:
     command: image --format table --output /home/trivydata/backend.txt todo-backend
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - trivy:/home/trivydata
+      - /home/ubuntu/trivydata:/home/trivydata
     depends_on:
       - backend
   database:
     image: mysql:8.0.45-debian
     container_name: todo-db 
-    environment:
-      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
-      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
-      - AWS_DEFAULT_REGION=${AWS_DEFAULT_REGION}
-    entrypoint: ["/bin/bash", "/docker-entrypoint-init.sh"]
-    volumes:
-      - ./db-entrypoint.sh:/docker-entrypoint-init.sh
     networks:
       - connect-network
 volumes:
