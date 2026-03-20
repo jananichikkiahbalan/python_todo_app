@@ -2,7 +2,9 @@ version: '3.9'
 services:
   frontend:
     image: todo-frontend
-    build: /frontend/Dockerfile
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
     container_name: todo-frontend
     ports:
       - "8080:80"
@@ -21,7 +23,9 @@ services:
       - frontend
   backend:
     image: todo-backend
-    build: /backend/Dockerfile
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
     container_name: todo-backend 
     ports:
       - "5000:5000"
