@@ -31,6 +31,9 @@ services:
       - "5000:5000"
     networks:
       - connect-network
+    environment:
+      SECRET_NAME: "prod/todo/db-creds"
+      AWS_REGION: "ap-south-1"
     depends_on:
       - database
   trivy-backend:
