@@ -17,10 +17,11 @@ jobs:
         uses: docker/setup-buildx-action@v3
 
       - name: Build backend image
-        run: docker build -t backend:latest ./backend
+        run: docker build -t backend:latest -t backend:${{ github.run_number }} ./backend
+        
 
       - name: Build frontend image
-        run: docker build -t frontend:latest ./frontend
+        run: docker build -t frontend:latest -t frontend:${{ github.run_number }} ./frontend
 
       - name: Scan backend image with Trivy
         uses: aquasecurity/trivy-action@master
@@ -47,12 +48,12 @@ jobs:
       - name: Push backend image
         run: |
           docker tag backend:latest jananibalan/backend:latest
-          docker push jananibalan/backend:latest
+          docker push jananibalan/backend:${{ github.run_number }}
 
       - name: Push frontend image
         run: |
           docker tag frontend:latest jananibalan/frontend:latest
-          docker push jananibalan/frontend:latest
+          docker push jananibalan/frontend:${{ github.run_number }}
       
       - name: Deploy to EC2
         uses: appleboy/ssh-action@v1.0.0
