@@ -1,4 +1,5 @@
 version: '3.9'
+
 services:
   frontend:
     image: jananibalan/frontend:latest
@@ -12,7 +13,7 @@ services:
 
   backend:
     image: jananibalan/backend:latest
-    container_name: todo-backend 
+    container_name: todo-backend
     ports:
       - "5000:5000"
     networks:
@@ -22,7 +23,7 @@ services:
       AWS_REGION: "ap-south-1"
     depends_on:
       - database
-  
+
   database:
     image: mysql:8.0.45-debian
     container_name: todo-db
@@ -34,11 +35,8 @@ services:
       MYSQL_USER: todo_user
       MYSQL_PASSWORD: todo_pass
     volumes:
-      - ./backend/schema.sql:/docker-entrypoint-initdb.d/schema.sql  # ✅ auto runs on startup
-volumes:
-  trivy: {}
+      - ./backend/schema.sql:/docker-entrypoint-initdb.d/schema.sql
+
 networks:
   connect-network:
     driver: bridge
-
-
