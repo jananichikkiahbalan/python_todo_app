@@ -5,7 +5,7 @@ services:
     image: jananibalan/frontend:latest
     container_name: todo-frontend
     ports:
-      - "8080:80"
+      - "80:80"
     networks:
       - connect-network
     depends_on:
@@ -19,7 +19,7 @@ services:
     networks:
       - connect-network
     environment:
-      SECRET_NAME: "prod1-/todo/db-creds"
+      SECRET_NAME: "todo/db-creds"
       AWS_REGION: "ap-south-1"
     depends_on:
       - database
