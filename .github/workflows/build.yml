@@ -54,7 +54,9 @@ jobs:
 
       - name: Push frontend image
         run: |
-          docker tag backend:latest jananibalan/frontend:${{ github.run_number }}
+          docker tag frontend:latest jananibalan/frontend:latest
+          docker tag frontend:${{ github.run_number }} jananibalan/frontend:${{ github.run_number }}
+          docker push jananibalan/frontend:latest
           docker push jananibalan/frontend:${{ github.run_number }}
       
       - name: Deploy to EC2
