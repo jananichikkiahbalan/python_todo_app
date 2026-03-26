@@ -1,0 +1,39 @@
+# ----------------------
+# Terraform (IMPORTANT)
+# ----------------------
+terraform/.terraform/
+terraform/*.tfstate
+terraform/*.tfstate.*
+terraform/crash.log
+
+# ----------------------
+# Python
+# ----------------------
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+venv/
+env/
+
+# ----------------------
+# Environment variables
+# ----------------------
+.env
+.env.*
+
+# ----------------------
+# Logs
+# ----------------------
+*.log
+
+# ----------------------
+# OS files
+# ----------------------
+.DS_Store
+Thumbs.db
+
+# ----------------------
+# VS Code (optional)
+# ----------------------
+.vscode/
