@@ -22,7 +22,9 @@ services:
       SECRET_NAME: "todo/db-creds"
       AWS_REGION: "ap-south-1"
     depends_on:
-      - database
+      database:
+        condition: service_healthy
+
 
   database:
     image: mysql:8.0.45-debian
@@ -34,8 +36,10 @@ services:
       MYSQL_DATABASE: todo_db
       MYSQL_USER: todo_user
       MYSQL_PASSWORD: todo_pass
-    volumes:
-      - ./backend/schema.sql:/docker-entrypoint-initdb.d/schema.sql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      retries: 5
 
 networks:
   connect-network:
