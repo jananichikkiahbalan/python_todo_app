@@ -49,7 +49,9 @@ jobs:
 
       - name: Push backend image
         run: |
+          docker tag backend:latest jananibalan/backend:latest
           docker tag backend:latest jananibalan/backend:${{ github.run_number }}
+          docker push jananibalan/backend:latest
           docker push jananibalan/backend:${{ github.run_number }}
 
       - name: Push frontend image
@@ -58,7 +60,17 @@ jobs:
           docker tag frontend:${{ github.run_number }} jananibalan/frontend:${{ github.run_number }}
           docker push jananibalan/frontend:latest
           docker push jananibalan/frontend:${{ github.run_number }}
-      
+
+      - name: Copy schema to EC2
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          source: "backend/schema.sql"
+          target: "~/"
+          strip_components: 1
+
       - name: Deploy to EC2
         uses: appleboy/ssh-action@v1.0.0
         with:
