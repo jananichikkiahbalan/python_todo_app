@@ -25,7 +25,6 @@ services:
       database:
         condition: service_healthy
 
-
   database:
     image: mysql:8.0.45-debian
     container_name: todo-db
@@ -41,7 +40,7 @@ services:
       interval: 10s
       retries: 5
     volumes:
-    - ~/schema.sql:/docker-entrypoint-initdb.d/schema.sql
+      - /home/ubuntu/schema.sql:/docker-entrypoint-initdb.d/schema.sql
 
 networks:
   connect-network:
