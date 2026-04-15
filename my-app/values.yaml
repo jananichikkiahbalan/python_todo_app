@@ -1,0 +1,62 @@
+frontend:
+  replicaCount: 2
+
+  image:
+    repository: jananibalan/frontend
+    tag: "v4"
+  containerPort: 80
+
+  service:
+    type: NodePort
+    port: 80
+    targetPort: 80
+    nodePort: 30007
+
+backend:
+  replicaCount: 2
+
+  image:
+    repository: jananibalan/backend
+    tag: "v2"
+
+  containerPort: 5000
+
+  service:
+    type: ClusterIP
+    port: 5000
+    targetPort: 5000
+  env:
+    DB_HOST: "myapp-mysql"
+    DB_PORT: "3306"
+    DB_NAME: "todo_db"
+  secret:
+    DB_USER: "todo_user"
+    DB_PASSWORD: "todo_pass"
+
+mysql:
+  replicaCount: 2
+
+  image: mysql
+  tag: "8.0.45-debian"
+
+  containerPort: 3306
+
+  service:
+    type: ClusterIP
+    port: 3306
+    targetPort: 3306
+
+  secret:
+    MYSQL_USER: "todo_user"
+    MYSQL_PASSWORD: "todo_pass"
+    MYSQL_ROOT_PASSWORD: "rootpass123"
+    MYSQL_DATABASE: "todo_db"
+
+  persistent:
+    enabled: true
+    accessMode: ReadWriteOnce
+    size: 1Gi
+
+serviceAccount:
+  create: true
+  name: ""
