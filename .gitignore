@@ -37,3 +37,7 @@ Thumbs.db
 # VS Code (optional)
 # ----------------------
 .vscode/
+
+k8s/aws-secret.yaml
+
+eks-project/.terraform
