@@ -41,3 +41,7 @@ Thumbs.db
 k8s/aws-secret.yaml
 
 eks-project/.terraform
+eks-project/.terraform/
+eks-project/*.tfstate
+eks-project/*.tfstate.backup
+k8s/aws-secret.yaml
